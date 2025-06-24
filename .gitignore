@@ -35,3 +35,30 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Environment files - NEVER commit these!
+.env.local
+.env.development
+.env.production
+.env.test
+*.env
+
+# API Keys and Secrets
+config/secrets.js
+secrets/
+credentials/
+
+# Temporary and cache files
+.cache/
+.temp/
+.tmp/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+Thumbs.db
+Desktop.ini

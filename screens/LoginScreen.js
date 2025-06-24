@@ -8,20 +8,22 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { auth } from '../lib/supabase';
 import { useTheme } from '../lib/theme';
 import offlineStorage from '../lib/offlineStorage';
-import { 
+import {
   AnimatedGlassBackground, 
   GlassyCard, 
   GlassyButton 
 } from '../components/GlassyComponents';
 
 
-export default function LoginScreen() {
+export default function LoginScreen() { 
   const { colors } = useTheme(); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -132,13 +134,21 @@ export default function LoginScreen() {
     container: {
       flex: 1,
     },
+    safeArea: {
+      flex: 1,
+    },
     keyboardView: {
       flex: 1,
+    },
+    scrollView: {
+      flexGrow: 1,
     },
     content: {
       flex: 1,
       justifyContent: 'center',
       paddingHorizontal: 24,
+      paddingVertical: 40,
+      minHeight: Dimensions.get('window').height - 100,
     },
     logoContainer: {
       alignItems: 'center',
@@ -232,94 +242,102 @@ export default function LoginScreen() {
   });
 
   return (
-    <AnimatedGlassBackground>
-      <SafeAreaView style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.keyboardView}
-        >
-          <View style={styles.content}>
-            {/* Logo and Title */}
-            <View style={styles.logoContainer}>
-              <Text style={styles.title}>✨ BusyBob</Text>
-              <Text style={styles.subtitle}>Your Student Productivity Hub</Text>
-              <Text style={styles.tagline}>Tasks • Moods • Journal • Calendar</Text>
-            </View>
+    <View style={styles.container}>
+      <AnimatedGlassBackground>
+        <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.keyboardView}
+          >
+            <ScrollView 
+              contentContainerStyle={styles.scrollView}
+              showsVerticalScrollIndicator={false}
+              bounces={false}
+            >
+              <View style={styles.content}>
+                {/* Logo and Title */}
+                <View style={styles.logoContainer}>
+                  <Text style={styles.title}>✨ BusyBob</Text>
+                  <Text style={styles.subtitle}>Your Student Productivity Hub</Text>
+                  <Text style={styles.tagline}>Tasks • Moods • Journal • Calendar</Text>
+                </View>
 
-            {/* Main Authentication Form */}
-            <GlassyCard style={styles.formCard}>
-              {isSignUp && (
-                <TextInput
-                  style={styles.input}
-                  placeholder="Full Name"
-                  placeholderTextColor={colors.textSecondary}
-                  value={name}
-                  onChangeText={setName}
-                  autoCapitalize="words"
-                />
-              )}
-              
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor={colors.textSecondary}
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-              
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor={colors.textSecondary}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-              />
+                {/* Main Authentication Form */}
+                <GlassyCard style={styles.formCard}>
+                  {isSignUp && (
+                    <TextInput
+                      style={styles.input}
+                      placeholder="Full Name"
+                      placeholderTextColor={colors.textSecondary}
+                      value={name}
+                      onChangeText={setName}
+                      autoCapitalize="words"
+                    />
+                  )}
+                  
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    placeholderTextColor={colors.textSecondary}
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                  />
+                  
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Password"
+                    placeholderTextColor={colors.textSecondary}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                  />
 
-              <GlassyButton
-                onPress={handleAuth}
-                disabled={loading}
-                variant="primary"
-                size="large"
-                style={{ marginBottom: 16 }}
-              >
-                {loading ? 'Please wait...' : (isSignUp ? 'Sign Up' : 'Sign In')}
-              </GlassyButton>
+                  <GlassyButton
+                    onPress={handleAuth}
+                    disabled={loading}
+                    variant="primary"
+                    size="large"
+                    style={{ marginBottom: 16 }}
+                  >
+                    {loading ? 'Please wait...' : (isSignUp ? 'Sign Up' : 'Sign In')}
+                  </GlassyButton>
 
-              <TouchableOpacity
-                style={styles.linkButton}
-                onPress={() => setIsSignUp(!isSignUp)}
-              >
-                <Text style={styles.linkText}>
-                  {isSignUp
-                    ? 'Already have an account? Sign In'
-                    : "Don't have an account? Sign Up"}
-                </Text>
-              </TouchableOpacity>
-            </GlassyCard>
+                  <TouchableOpacity
+                    style={styles.linkButton}
+                    onPress={() => setIsSignUp(!isSignUp)}
+                  >
+                    <Text style={styles.linkText}>
+                      {isSignUp
+                        ? 'Already have an account? Sign In'
+                        : "Don't have an account? Sign Up"}
+                    </Text>
+                  </TouchableOpacity>
+                </GlassyCard>
 
-            {/* Guest Mode Option */}
-            <GlassyCard style={styles.guestModeCard}>
-              <Ionicons name="person-outline" size={32} color={colors.primary} />
-              <Text style={styles.guestModeTitle}>Use Without Account</Text>
-              <Text style={styles.guestModeSubtitle}>
-                Start using BusyBob immediately without creating an account. 
-                All your data will be saved locally and you can sync later.
-              </Text>
-              
-              <GlassyButton
-                onPress={handleDirectGuestMode}
-                variant="glass"
-                size="medium"
-              >
-                Continue as Guest
-              </GlassyButton>
-            </GlassyCard>
-          </View>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </AnimatedGlassBackground>
+                {/* Guest Mode Option */}
+                <GlassyCard style={styles.guestModeCard}>
+                  <Ionicons name="person-outline" size={32} color={colors.primary} />
+                  <Text style={styles.guestModeTitle}>Use Without Account</Text>
+                  <Text style={styles.guestModeSubtitle}>
+                    Start using BusyBob immediately without creating an account. 
+                    All your data will be saved locally and you can sync later.
+                  </Text>
+                  
+                  <GlassyButton
+                    onPress={handleDirectGuestMode}
+                    variant="glass"
+                    size="medium"
+                  >
+                    Continue as Guest
+                  </GlassyButton>
+                </GlassyCard>
+              </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </AnimatedGlassBackground>
+    </View>
   );
 } 
