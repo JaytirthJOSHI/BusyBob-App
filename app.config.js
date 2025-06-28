@@ -38,4 +38,4 @@ export default {
       spotifyClientSecret: process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET || "your-spotify-client-secret"
     }
   }
-}; 
+};
