@@ -48,6 +48,13 @@ config/secrets.js
 secrets/
 credentials/
 
+# Certificates and signing files
+cert/
+*.p12
+*.mobileprovision
+*.cer
+*.certSigningRequest
+
 # Temporary and cache files
 .cache/
 .temp/
@@ -62,3 +69,7 @@ credentials/
 # OS generated files
 Thumbs.db
 Desktop.ini
+
+# native
+/ios
+/android

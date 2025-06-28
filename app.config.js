@@ -29,6 +29,9 @@ export default {
       favicon: "./assets/favicon.png"
     },
     extra: {
+      eas: {
+        projectId: "3bc384dd-d5dd-46e4-b08a-9536d7e4c37b"
+      },
       supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL || "your-supabase-url",
       supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "your-supabase-anon-key",
       spotifyClientId: process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID || "your-spotify-client-id",
